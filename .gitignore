@@ -1,0 +1,17 @@
+# Banco de dados local (contém dados temporários de teste)
+*.db
+*.sqlite3
+
+# Arquivos de vídeo e mídia locais
+*.mp4
+*.avi
+*.webm
+
+# Modelos do YOLO e pesos baixados
+*.pt
+
+# Pastas do Python e VS Code
+__pycache__/
+.vscode/
+.idea/
+*.pyc
