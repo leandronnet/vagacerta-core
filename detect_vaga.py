@@ -4,8 +4,15 @@ from ultralytics import YOLO
 import easyocr
 import re
 import requests
+import os
+from pathlib import Path
 
 URL_API = "http://127.0.0.1:8000/api/checar-vaga"
+
+# Caminho absoluto da pasta de fotos
+BASE_DIR = Path(__file__).resolve().parent
+PASTA_FOTOS = BASE_DIR / "static" / "infracoes"
+PASTA_FOTOS.mkdir(parents=True, exist_ok=True)
 
 print("Carregando inteligência de Leitura de Placas (OCR)...")
 reader = easyocr.Reader(['pt', 'en'], gpu=False)
@@ -22,7 +29,7 @@ status_api_mensagem = "Vaga em monitoramento"
 placa_consultada = None
 contador_frames = 0
 
-def consultar_api_vagacerta(placa):
+def consultar_api_vagacerta(placa, frame_atual):
     global status_api_mensagem
     try:
         payload = {"vaga_id": "VAGA-IDOSO-01", "placa": placa}
@@ -30,10 +37,21 @@ def consultar_api_vagacerta(placa):
         if resposta.status_code == 200:
             dados = resposta.json()
             status_api_mensagem = dados.get("mensagem", "")
+            
+            nome_foto = dados.get("nome_foto")
+            if nome_foto:
+                caminho_arquivo = PASTA_FOTOS / nome_foto
+                sucesso = cv2.imwrite(str(caminho_arquivo), frame_atual)
+                if sucesso:
+                    print(f"📸 Foto gravada com SUCESSO em: {caminho_arquivo}")
+                else:
+                    print(f"❌ Falha ao gravar foto OpenCV em: {caminho_arquivo}")
+                
             print(f"✅ API Respondeu: {status_api_mensagem}")
         else:
             status_api_mensagem = "Erro na resposta do Servidor"
     except Exception as e:
+        print(f"Erro na conexão com a API: {e}")
         status_api_mensagem = "Servidor API offline"
 
 def processar_frame(frame):
@@ -43,7 +61,6 @@ def processar_frame(frame):
     results = model(frame, verbose=False)[0]
     vaga_ocupada = False
 
-    # Tenta detecção normal via YOLO
     for box in results.boxes:
         cls_id = int(box.cls[0])
         if cls_id in CLASSES_VEICULOS:
@@ -53,15 +70,13 @@ def processar_frame(frame):
             if cv2.pointPolygonTest(VAGA_PCD_01, (centro_x, centro_y), False) >= 0:
                 vaga_ocupada = True
 
-    # SIMULAÇÃO DE VAGA OCUPADA:
-    # Como o vídeo sintético não tem foto real de carro, forçamos a ocupação a partir do quadro 30
-    if contador_frames > 30:
+    if contador_frames > 15:
         vaga_ocupada = True
         placa_detectada_atual = "XYZ9876"
 
     if vaga_ocupada and placa_consultada != placa_detectada_atual:
-        print(f"🔄 Disparando consulta da placa '{placa_detectada_atual}' para a API...")
-        consultar_api_vagacerta(placa_detectada_atual)
+        print(f"🔄 Disparando consulta da placa '{placa_detectada_atual}'...")
+        consultar_api_vagacerta(placa_detectada_atual, frame)
         placa_consultada = placa_detectada_atual
 
     if not vaga_ocupada:
@@ -83,15 +98,17 @@ def processar_frame(frame):
 
 cap = cv2.VideoCapture('estacionamento.mp4')
 
-while cap.isOpened():
+while True:
     ret, frame = cap.read()
+    
     if not ret:
-        break
+        cap.set(cv2.CAP_PROP_POS_FRAMES, 0)
+        continue
 
     frame_processado = processar_frame(frame)
     cv2.imshow("VagaCerta - Detector e OCR", frame_processado)
 
-    if cv2.waitKey(1) & 0xFF == ord('q'):
+    if cv2.waitKey(30) & 0xFF == ord('q'):
         break
 
 cap.release()
