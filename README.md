@@ -11,18 +11,18 @@ O sistema monitora continuamente o fluxo do estacionamento através de câmeras,
 
 ---
 
-## 🎯 Funcionalidades Principais
+## Funcionalidades Principais
 
-- 🔍 **Detecção de Veículos em Tempo Real:** Uso do modelo **YOLOv8** para identificar carros, motos, caminhões e ônibus em áreas delimitadas.
-- 📐 **Calibração Dinâmica de Vagas:** Ferramenta gráfica via OpenCV para delimitação e seleção de coordenadas de polígonos de vagas.
-- 🔤 **Leitura Automática de Placas (ALPR/OCR):** Reconhecimento de caracteres via **EasyOCR** otimizado com execução assíncrona (*multithreading*).
-- ⚡ **API de Validação em Tempo Real:** **FastAPI** provendo regras de negócio e checagem de autorização em frações de segundo.
-- 📸 **Captura Automática de Evidências:** Gravação de snapshots fotográficos de veículos autuados por infração.
-- 📊 **Dashboard Web Interativo:** Painel dinâmico em tempo real para cadastro de beneficiários, consulta de veículos autorizados e exibição do histórico de autuações.
+- **Detecção de Veículos em Tempo Real:** Uso do modelo **YOLOv8** para identificar carros, motos, caminhões e ônibus em áreas delimitadas.
+- **Calibração Dinâmica de Vagas:** Ferramenta gráfica via OpenCV para delimitação e seleção de coordenadas de polígonos de vagas.
+- **Leitura Automática de Placas (ALPR/OCR):** Reconhecimento de caracteres via **EasyOCR** otimizado com execução assíncrona (*multithreading*).
+- **API de Validação em Tempo Real:** **FastAPI** provendo regras de negócio e checagem de autorização em frações de segundo.
+- **Captura Automática de Evidências:** Gravação de snapshots fotográficos de veículos autuados por infração.
+- **Dashboard Web Interativo:** Painel dinâmico em tempo real para cadastro de beneficiários, consulta de veículos autorizados e exibição do histórico de autuações.
 
 ---
 
-## 🏗️ Arquitetura do Sistema
+## Arquitetura do Sistema
 
 ```text
 [ Câmera / Vídeo ] ──> [ YOLOv8 (Detecção) ] ──> [ EasyOCR (Thread Paralela) ]
@@ -44,7 +44,7 @@ Persistência de Dados: SQLite3
 
 Front-end / Dashboard: HTML5, CSS3, JavaScript (Fetch API / Polling)
 
-🚀 Como Executar o Projeto Localmente
+Como Executar o Projeto Localmente
 Pré-requisitos
 Python 3.10+ instalado
 
@@ -66,7 +66,8 @@ source venv/bin/activate
 3. Instalar as Dependências
 Bash
 pip install -r requirements.txt
-💻 Execução do Ecossistema
+
+Execução do Ecossistema
 Para rodar a aplicação completa, utilize dois terminais concorrentes:
 
 Passo 1: Subir o Servidor Web e API (Terminal 1)
@@ -77,13 +78,14 @@ Acesse o Dashboard Web no navegador: http://127.0.0.1:8000/
 Passo 2: Executar o Loop de Visão Computacional (Terminal 2)
 Bash
 python detect_vaga.py
-🎯 Ferramentas de Apoio
-🎥 Gerador de Vídeo Sintético de Teste
+
+Ferramentas de Apoio
+Gerador de Vídeo Sintético de Teste
 Para rodar a simulação sem dependência de gravações externas:
 
 Bash
 python gerar_video.py
-📍 Calibrador de Coordenadas da Vaga
+Calibrador de Coordenadas da Vaga
 Caso precise recalibrar os 4 cantos da vaga em uma nova câmera ou vídeo:
 
 Bash
@@ -103,6 +105,6 @@ vagacerta-core/
 ├── requirements.txt      # Dependências do projeto
 └── README.md             # Documentação do repositório
 
-## 🤝 Créditos e Co-pilotagem
+## Créditos e Co-pilotagem
 
 Este projeto foi desenvolvido por **Leandro Silva** com o auxílio do assistente de inteligência artificial **Gemini (Google)** como ferramenta de arquitetura, co-pilotagem de código, otimização de performance e suporte no desenvolvimento.
