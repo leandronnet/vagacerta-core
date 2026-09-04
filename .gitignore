@@ -9,7 +9,68 @@
 
 # Modelos do YOLO e pesos baixados
 *.pt
+# ==========================================
+# 1. Ambientes Virtuais (Virtual Environments)
+# ==========================================
+venv/
+.venv/
+env/
+ENV/
+env.bak/
+venv.bak/
 
+# ==========================================
+# 2. Cache e Arquivos Compilados do Python
+# ==========================================
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.coverage
+htmlcov/
+
+# ==========================================
+# 3. Modelos de IA e Pesos do YOLO/EasyOCR
+# ==========================================
+# Evita subir pesos pesados de IA para o Git
+*.pt
+*.onnx
+*.engine
+.easyocr/
+
+# Exceção: Descomente a linha abaixo se quiser manter o modelo ultralight no repo
+# !yolov8n.pt
+
+# ==========================================
+# 4. Banco de Dados Local e Mídia Gerada
+# ==========================================
+# Previne subir o banco SQLite com dados de testes locais
+*.db
+*.sqlite3
+
+# Fotos e evidências dinâmicas geradas pelo detector
+static/infracoes/*.jpg
+static/infracoes/*.png
+!static/infracoes/.gitkeep
+
+# Vídeo de simulação gerado localmente (se for muito pesado)
+# estacionamento.mp4
+
+# ==========================================
+# 5. IDEs, Editores e Sistema Operacional
+# ==========================================
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# ==========================================
+# 6. Variáveis de Ambiente e Chaves de API
+# ==========================================
+.env
+.env.local
 # Pastas do Python e VS Code
 __pycache__/
 .vscode/
