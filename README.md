@@ -106,7 +106,3 @@ vagacerta-core/
 ## 🤝 Créditos e Co-pilotagem
 
 Este projeto foi desenvolvido por **Leandro Silva** com o auxílio do assistente de inteligência artificial **Gemini (Google)** como ferramenta de arquitetura, co-pilotagem de código, otimização de performance e suporte no desenvolvimento.
-
----
-
-Developed with by **Leandro Silva** | [GitHub](https://github.com/leandronnet)
